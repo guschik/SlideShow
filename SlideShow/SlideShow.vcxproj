@@ -112,11 +112,13 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Buttons.h" />
     <ClInclude Include="lcd_utils.h" />
     <ClInclude Include="TouchScreen_kbv.h" />
     <ClInclude Include="__vm\.SlideShow.vsarduino.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Buttons.cpp" />
     <ClCompile Include="lcd_utils.cpp" />
     <ClCompile Include="TouchScreen_kbv.cpp" />
   </ItemGroup>

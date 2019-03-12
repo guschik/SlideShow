@@ -4,6 +4,7 @@
  Author:	rober
 */
 
+#include "Buttons.h"
 #include  "lcd_utils.h"
 
 MCUFRIEND_kbv tft;
