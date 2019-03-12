@@ -18,6 +18,8 @@ SdFat SD;
 //#define NAMEMATCH "tiger"   // *tiger*.bmp
 char namebuf[32] = "/";   //BMP files in root directory
 //char namebuf[32] = "/bitmaps/";  //BMP directory e.g. files in /bitmaps/*.bmp
+char ui[] = "/UI/navbar.bmp";
+
 File root;
 int pathlen;
 
@@ -128,7 +130,8 @@ void loop() {
 		show_image_event = 0;
 	}
 
-	if (ISPRESSED()) {
-		paused = 1 - paused;
+	if (ISPRESSED() && paused == 0) {
+		paused = 1;
+		showBMP(ui, 0, 200);
 	}
 }
