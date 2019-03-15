@@ -13,12 +13,26 @@ class ButtonsClass
 {
  protected:
 
-
  public:
 	void init();
+	virtual bool isPressed();
+	virtual void onClick();
+
+	void handleClick();
 };
 
-extern ButtonsClass Buttons;
+class TouchButtonsClass : public ButtonsClass
+{
+protected:
+	uint16_t top;
+	uint16_t left;
+	uint16_t bottom;
+	uint16_t right;
 
+public:
+	void init(uint16_t top,	uint16_t left, uint16_t bottom,	uint16_t right);
+	virtual bool isPressed();
+
+};
 #endif
 

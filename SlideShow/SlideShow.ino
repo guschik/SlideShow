@@ -4,8 +4,8 @@
  Author:	rober
 */
 
-#include "Buttons.h"
 #include  "lcd_utils.h"
+#include "UIButtons.h"
 
 
 #define NAMEMATCH ""        // "" matches any name
@@ -122,6 +122,7 @@ void setup() {
 	pathlen = strlen(namebuf);
 
 	timer_setup();
+	setupUIButtons();
 }
 
 uint8_t paused = 0;
