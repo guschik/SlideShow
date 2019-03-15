@@ -1,6 +1,17 @@
 #include <Arduino.h>
 #include "lcd_utils.h"
 
+MCUFRIEND_kbv tft;
+
+// touchscreen utils
+int XP = 6, YP = A1, XM = A2, YM = 7;  //most common configuration
+TouchScreen_kbv ts(XP, YP, XM, YM, 300);   //re-initialised after diagnose
+TSPoint_kbv tp;
+
+SdFat SD;
+
+// ----------------------------
+// System init
 void lcd_setup() {
     uint16_t ID;
     ID = tft.readID();
@@ -18,7 +29,8 @@ void lcd_setup() {
     }
 }
 
-
+// -------------------------------
+// Bitmap reader
 uint16_t read16(File& f) {
     uint16_t result;         // read little-endian
     f.read((uint8_t*)&result, sizeof(result));
@@ -171,8 +183,8 @@ uint8_t showBMP(char *nm, int x, int y)
     return (ret);
 }
 
+// -----------------------------------
 // Touchscreen utils
-
 void readResistiveTouch(void)
 {
     tp = ts.getPoint();

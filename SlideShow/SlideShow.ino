@@ -7,14 +7,7 @@
 #include "Buttons.h"
 #include  "lcd_utils.h"
 
-MCUFRIEND_kbv tft;
 
-// touchscreen utils
-int XP = 6, YP = A1, XM = A2, YM = 7;  //most common configuration
-TouchScreen_kbv ts(XP, YP, XM, YM, 300);   //re-initialised after diagnose
-TSPoint_kbv tp;
-
-SdFat SD;
 #define NAMEMATCH ""        // "" matches any name
 //#define NAMEMATCH "tiger"   // *tiger*.bmp
 char namebuf[32] = "/";   //BMP files in root directory
@@ -24,12 +17,44 @@ char ui[] = "/UI/navbar.bmp";
 File root;
 int pathlen;
 
+// -------------------------------------------------
+// timer manager
 // preload timer 65536-16MHz/1024
 #define TIMER_PRELOAD 49911
 uint8_t volatile timer_ticks = 0;
 uint8_t volatile timer_delay = 5;
 uint8_t volatile show_image_event = 1;
 
+void timer_setup() {
+	// initialize timer1 
+	TIMSK1 &= ~(1 << TOIE1);            // disable interrupts
+	TCCR1A &= ~((1 << WGM11) | (1 << WGM10));  // mode normal
+	TCCR1B &= ~((1 << WGM12) | (1 << WGM13));  // mode normal 
+	TIMSK1 &= ~(1 << OCIE1A);
+
+	// 1024 prescaler
+	TCCR1B |= (1 << CS12) | (1 << CS10);  // setta "1" nei bit CS10 e CS12
+	TCCR1B &= ~(1 << CS11);              // setta "0" nel bit CS11  
+
+	TCNT1 = TIMER_PRELOAD;            // preload timer 
+	timer_ticks = 0;
+	TIMSK1 |= (1 << TOIE1);              // enable interrupts
+}
+
+ISR(TIMER1_OVF_vect)          // timer compare interrupt service routine
+{
+	TCNT1 = TIMER_PRELOAD;            // preload timer 
+	timer_ticks++;
+
+	if (timer_ticks > timer_delay) {
+		timer_ticks = 0;
+		show_image_event = 1;
+	}
+}
+
+
+// ---------------------------------
+// images management
 
 void showNextImage() {
 	char *nm = namebuf + pathlen;
@@ -84,32 +109,9 @@ void showImage(char *nm) {
 	}
 }
 
-void timer_setup() {
-	// initialize timer1 
-	TIMSK1 &= ~(1 << TOIE1);            // disable interrupts
-	TCCR1A &= ~((1 << WGM11) | (1 << WGM10));  // mode normal
-	TCCR1B &= ~((1 << WGM12) | (1 << WGM13));  // mode normal 
-	TIMSK1 &= ~(1 << OCIE1A);
 
-	// 1024 prescaler
-	TCCR1B |= (1 << CS12) | (1 << CS10);  // setta "1" nei bit CS10 e CS12
-	TCCR1B &= ~(1 << CS11);              // setta "0" nel bit CS11  
-
-	TCNT1 = TIMER_PRELOAD;            // preload timer 
-	timer_ticks = 0;
-	TIMSK1 |= (1 << TOIE1);              // enable interrupts
-}
-
-ISR(TIMER1_OVF_vect)          // timer compare interrupt service routine
-{
-	TCNT1 = TIMER_PRELOAD;            // preload timer 
-	timer_ticks++;
-
-	if (timer_ticks > timer_delay) {
-		timer_ticks = 0;
-		show_image_event = 1;
-	}
-}
+// ------------------------------------------
+// Basic Arduino functions
 
 // the setup function runs once when you press reset or power the board
 void setup() {
