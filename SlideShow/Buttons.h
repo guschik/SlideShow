@@ -49,7 +49,7 @@ protected:
 public:
 	void init(uint16_t top,	uint16_t left, uint16_t bottom,	uint16_t right);
 	virtual bool isPressed();
-
+	virtual void onClick();
 };
 #endif
 

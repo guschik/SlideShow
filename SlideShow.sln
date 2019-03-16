@@ -12,6 +12,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{6BD7BA10-9F57-
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{004734DB-313D-4905-8170-5CDFE310EF9D}"
 	ProjectSection(SolutionItems) = preProject
+		calibration.txt = calibration.txt
 		LICENSE.txt = LICENSE.txt
 		README.md = README.md
 	EndProjectSection

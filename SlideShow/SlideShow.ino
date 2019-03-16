@@ -136,7 +136,14 @@ void setup() {
 	setupUIButtons();
 }
 
+void showNavBar() {
+	showBMP(ui, 0, 200);
+}
+
 uint8_t paused = 0;
+ButtonsClass* Buttons[] = {
+	&PlayPauseButton, &NextButton, &RewindButton
+};
 
 // the loop function runs over and over again until power down or reset
 void loop() {
@@ -147,13 +154,16 @@ void loop() {
 		}
 		if (ISPRESSED()) {
 			paused = 1;
-			showBMP(ui, 0, 200);
+			showNavBar();
 		}
 	}
-	else {
-		PlayPauseButton.handleClick();
-		NextButton.handleClick();
-		RewindButton.handleClick();
+	else if (ISPRESSED()) {
+		getPointXY();
+
+		Buttons[0]->handleClick();
+		Buttons[1]->handleClick();
+		Buttons[2]->handleClick();
+
 	}
 }
 

@@ -26,6 +26,12 @@
 
 #include "Buttons.h"
 
+extern uint8_t volatile timer_ticks;
+extern uint8_t volatile timer_delay;
+extern uint8_t volatile show_image_event;
+extern uint8_t paused;
+extern File root;
+
 class PlayPauseButtonClass : public TouchButtonsClass
 {
 public:

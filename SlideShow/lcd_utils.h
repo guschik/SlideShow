@@ -51,6 +51,8 @@ void lcd_setup();
 uint16_t read16(File& f);
 uint32_t read32(File& f);
 uint8_t showBMP(char *nm, int x, int y);
+extern void showNextImage();
+extern void showNavBar();
 
 void readResistiveTouch(void);
 bool ISPRESSED(void);

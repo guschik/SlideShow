@@ -1,0 +1,21 @@
+TouchScreen.h GFX Calibration
+ID = 0x9341
+
+cx=818 cy=116 cz=638 LEFT, TOP, Pressure
+cx=485 cy=108 cz=584 LEFT, MIDH, Pressure
+cx=141 cy=111 cz=560 LEFT, BOT, Pressure
+cx=834 cy=478 cz=550 MIDW, TOP, Pressure
+cx=143 cy=488 cz=415 MIDW, BOT, Pressure
+cx=831 cy=850 cz=470 RT, TOP, Pressure
+cx=497 cy=878 cz=354 RT, MIDH, Pressure
+cx=142 cy=868 cz=246 RT, BOT, Pressure
+MCUFRIEND_kbv ID=0x9341  240 x 320
+
+const int XP=8,XM=A2,YP=A3,YM=9; //240x320 ID=0x9341
+const int TS_LEFT=110,TS_RT=858,TS_TOP=85,TS_BOT=890;
+PORTRAIT CALIBRATION     240 x 320
+x = map(p.x, LEFT=110, RT=858, 0, 240)
+y = map(p.y, TOP=85, BOT=890, 0, 320)
+LANDSCAPE CALIBRATION    320 x 240
+x = map(p.y, LEFT=85, RT=890, 0, 320)
+y = map(p.x, TOP=858, BOT=110, 0, 240)

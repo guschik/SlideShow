@@ -22,7 +22,7 @@ MCUFRIEND_kbv tft;
 
 // touchscreen utils
 int XP = 8, XM = A2, YP = A3, YM = 9; //240x320 ID=0x9341
-const int TS_LEFT = 132, TS_RT = 894, TS_TOP = 92, TS_BOT = 881;
+const int TS_LEFT = 110, TS_RT = 858, TS_TOP = 85, TS_BOT = 890;
 TouchScreen_kbv ts(XP, YP, XM, YM, 300);   //re-initialised after diagnose
 TSPoint_kbv tp;
 TSPoint_kbv point;
@@ -233,8 +233,8 @@ bool ISPRESSED(void)
 void getPointXY(void)
 {
 	// LANDSCAPE CALIBRATION    320 x 240
-	point.x = map(tp.y, TS_LEFT, TS_RT, 0, 320);
-	point.y = map(tp.x, TS_TOP, TS_BOT, 0, 240);
+	point.y = map(tp.x, TS_RT, TS_LEFT, 0, 240);
+	point.x = map(tp.y, TS_TOP, TS_BOT, 0, 320);
 }
 
 boolean diagnose_pins()
