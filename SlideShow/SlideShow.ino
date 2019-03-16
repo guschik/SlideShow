@@ -1,8 +1,19 @@
-/*
- Name:		SlideShow.ino
- Created:	11/03/2019 21:07:17
- Author:	rober
-*/
+// This file is part of CasaSoft Arduino SlideShow
+// 
+// CasaSoft Arduino SlideShow is free software: 
+// you can redistribute it and/or modify it
+// under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// 
+// CasaSoft Arduino SlideShow is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+// See the GNU General Public License for more details.
+// 
+// You should have received a copy of the GNU General Public License
+// along with CasaSoft Arduino SlideShow.  
+// If not, see <http://www.gnu.org/licenses/>.
 
 #include  "lcd_utils.h"
 #include "UIButtons.h"
@@ -129,13 +140,20 @@ uint8_t paused = 0;
 
 // the loop function runs over and over again until power down or reset
 void loop() {
-	if (show_image_event == 1 && paused == 0) {
-		showNextImage();
-		show_image_event = 0;
+	if (paused == 0) {
+		if (show_image_event == 1) {
+			showNextImage();
+			show_image_event = 0;
+		}
+		if (ISPRESSED()) {
+			paused = 1;
+			showBMP(ui, 0, 200);
+		}
 	}
-
-	if (ISPRESSED() && paused == 0) {
-		paused = 1;
-		showBMP(ui, 0, 200);
+	else {
+		PlayPauseButton.handleClick();
+		NextButton.handleClick();
+		RewindButton.handleClick();
 	}
 }
+
