@@ -4,9 +4,11 @@
 MCUFRIEND_kbv tft;
 
 // touchscreen utils
-int XP = 6, YP = A1, XM = A2, YM = 7;  //most common configuration
+int XP = 8, XM = A2, YP = A3, YM = 9; //240x320 ID=0x9341
+const int TS_LEFT = 132, TS_RT = 894, TS_TOP = 92, TS_BOT = 881;
 TouchScreen_kbv ts(XP, YP, XM, YM, 300);   //re-initialised after diagnose
 TSPoint_kbv tp;
+TSPoint_kbv point;
 
 SdFat SD;
 
@@ -202,13 +204,20 @@ bool ISPRESSED(void)
     bool state, oldstate;
     while (count < 10) {
         readResistiveTouch();
-        state = tp.z > 200;     //ADJUST THIS VALUE TO SUIT YOUR SCREEN e.g. 20 ... 250
+        state = tp.z > 100;     //ADJUST THIS VALUE TO SUIT YOUR SCREEN e.g. 20 ... 250
         if (state == oldstate) count++;
         else count = 0;
         oldstate = state;
         delay(5);
     }
     return oldstate;
+}
+
+void getPointXY(void)
+{
+	// LANDSCAPE CALIBRATION    320 x 240
+	point.x = map(tp.y, TS_LEFT, TS_RT, 0, 320);
+	point.y = map(tp.x, TS_TOP, TS_BOT, 0, 240);
 }
 
 boolean diagnose_pins()

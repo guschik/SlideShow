@@ -16,6 +16,7 @@
 extern MCUFRIEND_kbv tft;
 extern TouchScreen_kbv ts;   
 extern TSPoint_kbv tp; 
+extern TSPoint_kbv point;
 extern int XP;
 extern int YP;
 extern int XM;
@@ -36,5 +37,6 @@ uint8_t showBMP(char *nm, int x, int y);
 
 void readResistiveTouch(void);
 bool ISPRESSED(void);
+void getPointXY(void);
 boolean diagnose_pins(void);
 #endif
