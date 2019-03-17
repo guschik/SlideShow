@@ -15,15 +15,14 @@
 // along with CasaSoft Arduino SlideShow.  
 // If not, see <http://www.gnu.org/licenses/>.
 
-#include  "lcd_utils.h"
+#include "lcd_utils.h"
 #include "UIButtons.h"
-
+#include "UI.h"
 
 #define NAMEMATCH ""        // "" matches any name
 //#define NAMEMATCH "tiger"   // *tiger*.bmp
 char namebuf[32] = "/";   //BMP files in root directory
 //char namebuf[32] = "/bitmaps/";  //BMP directory e.g. files in /bitmaps/*.bmp
-char ui[] = "/UI/navbar.bmp";
 
 File root;
 int pathlen;
@@ -133,17 +132,10 @@ void setup() {
 	pathlen = strlen(namebuf);
 
 	timer_setup();
-	setupUIButtons();
-}
-
-void showNavBar() {
-	showBMP(ui, 0, 200);
+	UI.init();
 }
 
 uint8_t paused = 0;
-ButtonsClass* Buttons[] = {
-	&PlayPauseButton, &NextButton, &RewindButton
-};
 
 // the loop function runs over and over again until power down or reset
 void loop() {
@@ -154,16 +146,12 @@ void loop() {
 		}
 		if (ISPRESSED()) {
 			paused = 1;
-			showNavBar();
+			UI.showNavBar();
 		}
 	}
 	else if (ISPRESSED()) {
 		getPointXY();
-
-		Buttons[0]->handleClick();
-		Buttons[1]->handleClick();
-		Buttons[2]->handleClick();
-
+		UI.handleClick();
 	}
 }
 

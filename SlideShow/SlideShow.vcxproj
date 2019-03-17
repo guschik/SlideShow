@@ -115,6 +115,7 @@
     <ClInclude Include="Buttons.h" />
     <ClInclude Include="lcd_utils.h" />
     <ClInclude Include="TouchScreen_kbv.h" />
+    <ClInclude Include="UI.h" />
     <ClInclude Include="UIButtons.h" />
     <ClInclude Include="__vm\.SlideShow.vsarduino.h" />
   </ItemGroup>
@@ -122,6 +123,7 @@
     <ClCompile Include="Buttons.cpp" />
     <ClCompile Include="lcd_utils.cpp" />
     <ClCompile Include="TouchScreen_kbv.cpp" />
+    <ClCompile Include="UI.cpp" />
     <ClCompile Include="UIButtons.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

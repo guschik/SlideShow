@@ -31,8 +31,8 @@
 #define SPI_SPEED SD_SCK_MHZ(50)
 
 extern MCUFRIEND_kbv tft;
-extern TouchScreen_kbv ts;   
-extern TSPoint_kbv tp; 
+extern TouchScreen_kbv ts;
+extern TSPoint_kbv tp;
 extern TSPoint_kbv point;
 extern int XP;
 extern int YP;

@@ -15,31 +15,30 @@
 // along with CasaSoft Arduino SlideShow.  
 // If not, see <http://www.gnu.org/licenses/>.
 
+#ifndef _UI_h
+#define _UI_h
+
+#if defined(ARDUINO) && ARDUINO >= 100
+	#include "arduino.h"
+#else
+	#include "WProgram.h"
+#endif
+
 #include "UIButtons.h"
-#include "UI.h"
 
-void PlayPauseButtonClass::onClick()
+class UIClass
 {
-	TouchButtonsClass::onClick();
-	tft.print("Play");
-	paused = 0;
-}
-PlayPauseButtonClass PlayPauseButton;
+ protected:
 
-void NextButtonClass::onClick()
-{
-	TouchButtonsClass::onClick();
-	tft.print("Next");
-	showNextImage();
-	UI.showNavBar();
-}
-NextButtonClass NextButton;
+ public:
+	static ButtonsClass* Buttons[];
 
-void RewindButtonClass::onClick()
-{
-	TouchButtonsClass::onClick();
-	tft.print("Rewind");
-	paused = 0;
-	root.rewindDirectory();
-}
-RewindButtonClass RewindButton;
+	void init();
+	void handleClick();
+	void showNavBar();
+};
+
+extern UIClass UI;
+
+#endif
+
