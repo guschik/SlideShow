@@ -7,8 +7,10 @@ copyright (c) 2019 Roberto Ceccarelli - Casasoft
 
 ## Required libraries
 
-Adafruit GFX Library
+* Adafruit GFX Library
+* MCUFRIEND_kbv library
+* Arduino SdFat library
 
-MCUFRIEND_kbv library
+## Wiring
 
-Arduino SdFat library
+![Wiring schema](wiring.jpg)
