@@ -1,4 +1,6 @@
 // This file is part of CasaSoft Arduino SlideShow
+//
+// copyright (c) 2019 Roberto Ceccarelli - Casasoft
 // 
 // CasaSoft Arduino SlideShow is free software: 
 // you can redistribute it and/or modify it
