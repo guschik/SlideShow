@@ -21,7 +21,7 @@
 void PlayPauseButtonClass::onClick()
 {
 	TouchButtonsClass::onClick();
-	tft.print("Play");
+	HW.tft.print("Play");
 	paused = 0;
 }
 PlayPauseButtonClass PlayPauseButton;
@@ -29,7 +29,7 @@ PlayPauseButtonClass PlayPauseButton;
 void NextButtonClass::onClick()
 {
 	TouchButtonsClass::onClick();
-	tft.print("Next");
+	HW.tft.print("Next");
 	showNextImage();
 	UI.showNavBar();
 }
@@ -38,7 +38,7 @@ NextButtonClass NextButton;
 void RewindButtonClass::onClick()
 {
 	TouchButtonsClass::onClick();
-	tft.print("Rewind");
+	HW.tft.print("Rewind");
 	paused = 0;
 	root.rewindDirectory();
 }

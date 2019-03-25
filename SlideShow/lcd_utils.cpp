@@ -18,51 +18,27 @@
 #include <Arduino.h>
 #include "lcd_utils.h"
 
-MCUFRIEND_kbv tft;
-
 // touchscreen utils
-int XP = 8, XM = A2, YP = A3, YM = 9; //240x320 ID=0x9341
 const int TS_LEFT = 110, TS_RT = 858, TS_TOP = 85, TS_BOT = 890;
-TouchScreen_kbv ts(XP, YP, XM, YM, 300);   //re-initialised after diagnose
-TSPoint_kbv tp;
-TSPoint_kbv point;
 
-SdFat SD;
+HWClass HW;
 
-// ----------------------------
-// System init
-void lcd_setup() {
-	uint16_t ID;
-	ID = tft.readID();
-	if (ID == 0x0D3D3) ID = 0x9481;
-	tft.begin(ID);
-	tft.setRotation(1);
-	tft.fillScreen(TFT_BLUE);
-	tft.setTextColor(TFT_YELLOW);
-	bool good = SD.begin(SD_CS, SPI_SPEED);
-	if (!good) {
-		tft.setTextSize(2);
-		tft.setCursor(10, 130);
-		tft.print(F("cannot start SD"));
-		while (1);
-	}
-}
 
 // -------------------------------
 // Bitmap reader
-uint16_t read16(File& f) {
+uint16_t HWClass::read16(File& f) {
 	uint16_t result;         // read little-endian
 	f.read((uint8_t*)&result, sizeof(result));
 	return result;
 }
 
-uint32_t read32(File& f) {
+uint32_t HWClass::read32(File& f) {
 	uint32_t result;
 	f.read((uint8_t*)&result, sizeof(result));
 	return result;
 }
 
-uint8_t showBMP(char *nm, int x, int y)
+uint8_t HWClass::showBMP(char *nm, int x, int y)
 {
 	File bmpFile;
 	int bmpWidth, bmpHeight;    // W+H in pixels
@@ -202,71 +178,31 @@ uint8_t showBMP(char *nm, int x, int y)
 	return (ret);
 }
 
-// -----------------------------------
-// Touchscreen utils
-void readResistiveTouch(void)
+void HWClass::init()
 {
-	tp = ts.getPoint();
-	pinMode(YP, OUTPUT);      //restore shared pins
-	pinMode(XM, OUTPUT);
-	digitalWrite(YP, HIGH);  //because TFT control pins
-	digitalWrite(XM, HIGH);
-}
+	ts.diagnose_pins();
 
-bool ISPRESSED(void)
-{
-	// .kbv this was too sensitive !!
-	// now touch has to be stable for 50ms
-	int count = 0;
-	bool state, oldstate;
-	while (count < 10) {
-		readResistiveTouch();
-		state = tp.z > 100;     //ADJUST THIS VALUE TO SUIT YOUR SCREEN e.g. 20 ... 250
-		if (state == oldstate) count++;
-		else count = 0;
-		oldstate = state;
-		delay(5);
+	uint16_t ID;
+	ID = tft.readID();
+	if (ID == 0x0D3D3) ID = 0x9481;
+	tft.begin(ID);
+	tft.setRotation(1);
+	tft.fillScreen(TFT_BLUE);
+	tft.setTextColor(TFT_YELLOW);
+
+	bool good = SD.begin(SD_CS, SPI_SPEED);
+	if (!good) {
+		tft.setTextSize(2);
+		tft.setCursor(10, 130);
+		tft.print(F("cannot start SD"));
+		while (1);
 	}
-	return oldstate;
 }
 
-void getPointXY(void)
+
+void HWClass::getPointXY(void)
 {
 	// LANDSCAPE CALIBRATION    320 x 240
-	point.y = map(tp.x, TS_RT, TS_LEFT, 0, 240);
-	point.x = map(tp.y, TS_TOP, TS_BOT, 0, 320);
-}
-
-boolean diagnose_pins()
-{
-	int i, j, value, Apins[2], Dpins[2], Values[2], found = 0;
-	for (i = A0; i < A5; i++) pinMode(i, INPUT_PULLUP);
-	for (i = 2; i < 10; i++) pinMode(i, INPUT_PULLUP);
-	for (i = A0; i < A4; i++) {
-		pinMode(i, INPUT_PULLUP);
-		for (j = 5; j < 10; j++) {
-			pinMode(j, OUTPUT);
-			digitalWrite(j, LOW);
-			value = analogRead(i);               // ignore first reading
-			value = analogRead(i);
-			if (value < 100 && value > 0) {
-				if (found < 2) {
-					Apins[found] = i;
-					Dpins[found] = j;
-					Values[found] = value;
-				}
-				found++;
-			}
-			pinMode(j, INPUT_PULLUP);
-		}
-		pinMode(i, INPUT_PULLUP);
-	}
-	if (found == 2) {
-		int idx = Values[0] < Values[1];
-		XM = Apins[!idx]; XP = Dpins[!idx]; YP = Apins[idx]; YM = Dpins[idx];
-		//        ts = TouchScreen(XP, YP, XM, YM, 300);    //re-initialise with pins
-		ts = TouchScreen_kbv(XP, YP, XM, YM, 300);    //re-initialise with pins
-		return true;                              //success
-	}
-	return false;
+	point.y = map(ts.tp.x, TS_RT, TS_LEFT, 0, 240);
+	point.x = map(ts.tp.y, TS_TOP, TS_BOT, 0, 320);
 }

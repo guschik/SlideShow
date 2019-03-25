@@ -53,12 +53,12 @@ void TouchButtonsClass::init(uint16_t top, uint16_t left, uint16_t bottom, uint1
 
 bool TouchButtonsClass::isPressed()
 {
-	return point.x > this->left && point.x < this->right && point.y > this->top && point.y < this->bottom;
+	return HW.point.x > this->left && HW.point.x < this->right && HW.point.y > this->top && HW.point.y < this->bottom;
 }
 
 void TouchButtonsClass::onClick()
 {
-	tft.setTextColor(TFT_YELLOW, TFT_NAVY);
-	tft.setTextSize(3);
-	tft.setCursor(10, this->top+3);
+	HW.tft.setTextColor(TFT_YELLOW, TFT_NAVY);
+	HW.tft.setTextSize(3);
+	HW.tft.setCursor(10, this->top+3);
 }

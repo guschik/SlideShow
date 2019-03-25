@@ -30,17 +30,26 @@
 #define SD_CS     10
 #define SPI_SPEED SD_SCK_MHZ(50)
 
-extern MCUFRIEND_kbv tft;
-extern TouchScreen_kbv ts;
-extern TSPoint_kbv tp;
-extern TSPoint_kbv point;
-extern int XP;
-extern int YP;
-extern int XM;
-extern int YM;
-extern SdFat SD;
+class HWClass
+{
+private:
+	uint16_t read16(File& f);
+	uint32_t read32(File& f);
+//	int XP = 8, XM = A2, YP = A3, YM = 9;
 
-void lcd_setup();
+public:
+	MCUFRIEND_kbv tft;
+	TouchScreen_kbv ts;   //re-initialised after diagnose
+	TSPoint_kbv tp;
+	TSPoint_kbv point;
+	SdFat SD;
+
+	void init();
+	uint8_t showBMP(char *nm, int x, int y);
+	void getPointXY(void);
+};
+
+extern HWClass HW;
 
 #define BMPIMAGEOFFSET 54
 #define PALETTEDEPTH   0     // do not support Palette modes
@@ -48,14 +57,5 @@ void lcd_setup();
 
 #define BUFFPIXEL      20
 
-uint16_t read16(File& f);
-uint32_t read32(File& f);
-uint8_t showBMP(char *nm, int x, int y);
 extern void showNextImage();
-extern void showNavBar();
-
-void readResistiveTouch(void);
-bool ISPRESSED(void);
-void getPointXY(void);
-boolean diagnose_pins(void);
 #endif

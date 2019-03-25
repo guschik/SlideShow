@@ -39,7 +39,7 @@ void UIClass::handleClick()
 
 void UIClass::showNavBar()
 {
-	showBMP(ui, 0, 200);
+	HW.showBMP(ui, 0, 200);
 }
 
 

@@ -88,33 +88,33 @@ void showNextImage() {
 void showImage(char *nm) {
 	uint8_t ret;
 
-	tft.fillScreen(0);
-	tft.setCursor(10, 100);
-	tft.setTextSize(3);
-	tft.print(namebuf);
-	ret = showBMP(namebuf, 0, 0);
-	tft.setTextSize(2);
-	tft.setCursor(10, 130);
+	HW.tft.fillScreen(0);
+	HW.tft.setCursor(10, 100);
+	HW.tft.setTextSize(3);
+	HW.tft.print(namebuf);
+	ret = HW.showBMP(namebuf, 0, 0);
+	HW.tft.setTextSize(2);
+	HW.tft.setCursor(10, 130);
 	switch (ret) {
 	case 0:
 		break;
 	case 1:
-		tft.println(F("bad position"));
+		HW.tft.println(F("bad position"));
 		break;
 	case 2:
-		tft.println(F("bad BMP ID"));
+		HW.tft.println(F("bad BMP ID"));
 		break;
 	case 3:
-		tft.println(F("wrong number of planes"));
+		HW.tft.println(F("wrong number of planes"));
 		break;
 	case 4:
-		tft.println(F("unsupported BMP format"));
+		HW.tft.println(F("unsupported BMP format"));
 		break;
 	case 5:
-		tft.println(F("unsupported palette"));
+		HW.tft.println(F("unsupported palette"));
 		break;
 	default:
-		tft.println(F("unknown"));
+		HW.tft.println(F("unknown"));
 		break;
 	}
 }
@@ -125,10 +125,9 @@ void showImage(char *nm) {
 
 // the setup function runs once when you press reset or power the board
 void setup() {
-	diagnose_pins();
-	lcd_setup();
+	HW.init();
 
-	root = SD.open(namebuf);
+	root = HW.SD.open(namebuf);
 	pathlen = strlen(namebuf);
 
 	timer_setup();
@@ -144,13 +143,13 @@ void loop() {
 			showNextImage();
 			show_image_event = 0;
 		}
-		if (ISPRESSED()) {
+		if (HW.ts.ISPRESSED()) {
 			paused = 1;
 			UI.showNavBar();
 		}
 	}
-	else if (ISPRESSED()) {
-		getPointXY();
+	else if (HW.ts.ISPRESSED()) {
+		HW.getPointXY();
 		UI.handleClick();
 	}
 }
